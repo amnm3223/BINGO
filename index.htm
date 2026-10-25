@@ -74,8 +74,9 @@
 
     <!-- ヘッダー（印刷非表示） -->
     <header class="no-print bg-gradient-to-r from-amber-300 via-rose-300 to-sky-300 shadow-md p-4 text-center border-b-4 border-amber-400 mb-6">
-        <h1 class="text-2xl sm:text-4xl font-black text-slate-800 tracking-wider flex items-center justify-center gap-2">
-            <span>✨</span> あいさつビンゴをつくろう！ <span>✨</span>
+        <h1 class="text-2xl sm:text-4xl font-black text-slate-800 tracking-wider">
+            <span class="block">✨ あいさつ</span>
+            <span class="block">ビンゴをつくろう！ ✨</span>
         </h1>
         <p class="text-xs sm:text-sm font-bold text-slate-700 mt-1">
             すきな あいさつと イラストを えらんで、じぶんだけの ビンゴカードを つくろう！
@@ -112,7 +113,7 @@
             <!-- 印刷ボタン -->
             <div class="mt-6 pt-4 border-t-2 border-slate-100 flex flex-col gap-3">
                 <button onclick="window.print()" 
-                    class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-lg border-b-4 border-emerald-700 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-lg border-b-4 border-emerald-700 transition">
                     <span>🖨️</span> できたカードを いんさつする（PDF）
                 </button>
             </div>
@@ -142,7 +143,7 @@
                     <div class="bg-pastelYellow/40 rounded-2xl border-4 border-amber-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
                         <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-amber-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">1</span>
                         <!-- ぬりえ・スタンプ用円 -->
-                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-amber-400 bg-white flex items-center justify-center text-[10px] font-bold text-amber-500">
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-amber-400 bg-white flex items-center justify-center text-[10px] font-black text-amber-500">
                             できた
                         </div>
                         <div id="prevSvg1" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
@@ -152,7 +153,7 @@
                     <!-- マス 2 -->
                     <div class="bg-pastelBlue/40 rounded-2xl border-4 border-sky-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
                         <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-sky-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">2</span>
-                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-sky-400 bg-white flex items-center justify-center text-[10px] font-bold text-sky-500">
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-sky-400 bg-white flex items-center justify-center text-[10px] font-black text-sky-500">
                             できた
                         </div>
                         <div id="prevSvg2" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
@@ -162,7 +163,7 @@
                     <!-- マス 3 -->
                     <div class="bg-pastelPink/40 rounded-2xl border-4 border-pink-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
                         <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-pink-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">3</span>
-                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-pink-400 bg-white flex items-center justify-center text-[10px] font-bold text-pink-500">
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-pink-400 bg-white flex items-center justify-center text-[10px] font-black text-pink-500">
                             できた
                         </div>
                         <div id="prevSvg3" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
@@ -172,7 +173,7 @@
                     <!-- マス 4 -->
                     <div class="bg-pastelGreen/40 rounded-2xl border-4 border-emerald-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
                         <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-emerald-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">4</span>
-                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-emerald-400 bg-white flex items-center justify-center text-[10px] font-bold text-emerald-500">
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-emerald-400 bg-white flex items-center justify-center text-[10px] font-black text-emerald-500">
                             できた
                         </div>
                         <div id="prevSvg4" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
@@ -206,14 +207,14 @@
 
         // 教師側が用意するイラスト（SVG形式）
         const SVG_ICONS = {
-            school: `<svg class="w-full h-full text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 22V6l-6-4-6 4v16"/><path d="M6 12h12"/><path d="M6 16h12"/><path d="M6 8h12"/></svg>`,
-            friends: `<svg class="w-full h-full text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-            highfive: `<svg class="w-full h-full text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-1"/><path d="m6 15 3.5 3.5"/></svg>`,
-            wave: `<svg class="w-full h-full text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-1"/></svg>`,
-            sun: `<svg class="w-full h-full text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
-            heart: `<svg class="w-full h-full text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`,
-            smile: `<svg class="w-full h-full text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`,
-            sparkle: `<svg class="w-full h-full text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`
+            school: `<svg class="w-full h-full text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5-9-5zm0 0v6l9 5 9-5V9"/><path d="M8 11.5v5a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-5"/></svg>`,
+            friends: `<svg class="w-full h-full text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            highfive: `<svg class="w-full h-full text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11a2 2 0 1 1 4 0v5a2 2 0 0 1-4 0v-5zm10 0a2 2 0 1 1 4 0v5a2 2 0 0 1-4 0v-5z"/><path d="M11 14l2-2 2 2"/><path d="M13 12V7"/><path d="M5 13l3-3 3 3"/><path d="M19 13l-3-3-3 3"/></svg>`,
+            wave: `<svg class="w-full h-full text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5"/><path d="M14 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v5"/><path d="M10 11V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7"/><path d="M18 11a2 2 0 0 1 0 4H6a2 2 0 0 1 0-4h12z"/></svg>`,
+            sun: `<svg class="w-full h-full text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`,
+            heart: `<svg class="w-full h-full text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-8.5-4.8-10-10A5 5 0 0 1 12 6a5 5 0 0 1 10 5c-1.5 5.2-10 10-10 10z"/></svg>`,
+            smile: `<svg class="w-full h-full text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>`,
+            sparkle: `<svg class="w-full h-full text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`
         };
 
         // 各マスの状態管理
