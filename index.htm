@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あいさつビンゴをつくろう！</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Zen Maru Gothic & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Zen Maru Gothic"', 'sans-serif'],
+                    },
+                    colors: {
+                        pastelYellow: '#FEF08A',
+                        pastelBlue: '#BAE6FD',
+                        pastelPink: '#FBCFE8',
+                        pastelGreen: '#BBF7D0',
+                        pastelPurple: '#DDD6FE',
+                        pastelOrange: '#FED7AA',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background-color: #FAF5FF;
+        }
+
+        /* 印刷設定 (@media print) */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 10px !important;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+        }
+
+        /* 選択中のイラストハイライト */
+        .icon-option.selected {
+            border-color: #EC4899;
+            background-color: #FCE7F3;
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- ヘッダー（印刷非表示） -->
+    <header class="no-print bg-gradient-to-r from-amber-300 via-rose-300 to-sky-300 shadow-md p-4 text-center border-b-4 border-amber-400 mb-6">
+        <h1 class="text-2xl sm:text-4xl font-black text-slate-800 tracking-wider flex items-center justify-center gap-2">
+            <span>✨</span> あいさつビンゴをつくろう！ <span>✨</span>
+        </h1>
+        <p class="text-xs sm:text-sm font-bold text-slate-700 mt-1">
+            すきな あいさつと イラストを えらんで、じぶんだけの ビンゴカードを つくろう！
+        </p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- 左側：編集フォーム（印刷非表示） -->
+        <section class="no-print lg:col-span-6 bg-white rounded-3xl p-5 shadow-xl border-4 border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-900 border-b-4 border-indigo-100 pb-2 mb-4 flex items-center gap-2">
+                <span>✏️</span> ますの なかみを えらぼう
+            </h2>
+
+            <!-- 基本情報入力（クラス・名前） -->
+            <div class="bg-amber-50 p-3 rounded-2xl border-2 border-amber-200 mb-6 grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-amber-900 mb-1">くみ・グループ名</label>
+                    <input type="text" id="inputClass" value="1ねん 1くみ 1はん" oninput="updateCard()" 
+                        class="w-full text-sm font-bold p-2 rounded-xl border-2 border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-amber-900 mb-1">つくった人の なまえ</label>
+                    <input type="text" id="inputName" value="なまえ" oninput="updateCard()" 
+                        class="w-full text-sm font-bold p-2 rounded-xl border-2 border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+                </div>
+            </div>
+
+            <!-- 4つのマス編集エリア -->
+            <div class="space-y-4" id="framesEditContainer">
+                <!-- JavaScriptで動的生成 -->
+            </div>
+
+            <!-- 印刷ボタン -->
+            <div class="mt-6 pt-4 border-t-2 border-slate-100 flex flex-col gap-3">
+                <button onclick="window.print()" 
+                    class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-black text-xl rounded-2xl shadow-lg border-b-4 border-emerald-700 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <span>🖨️</span> できたカードを いんさつする（PDF）
+                </button>
+            </div>
+        </section>
+
+
+        <!-- 右側：リアルタイム プレビュー＆印刷領域 -->
+        <section class="lg:col-span-6 w-full flex justify-center sticky top-4">
+            <div id="printableCard" class="print-area w-full max-w-[595px] bg-white rounded-3xl p-6 shadow-2xl border-8 border-rose-300 relative text-slate-800">
+                
+                <!-- カード ヘッダー -->
+                <div class="text-center border-b-4 border-dashed border-rose-200 pb-3 mb-4">
+                    <div class="flex justify-between items-end mb-1 px-2 text-slate-600 text-xs sm:text-sm font-bold">
+                        <span id="previewClass" class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full border border-rose-300">1ねん 1くみ 1はん</span>
+                        <span id="previewName" class="bg-sky-100 text-sky-800 px-3 py-1 rounded-full border border-sky-300">なまえ</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-rose-600 tracking-wide mt-2">
+                        🌸 しょうがっこう あいさつカード 🌸
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1 font-bold">あいさつができたら、マスの中に すきな いろを ぬってね！</p>
+                </div>
+
+                <!-- 2x2 ビンゴグリッド -->
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 aspect-square">
+                    
+                    <!-- マス 1 -->
+                    <div class="bg-pastelYellow/40 rounded-2xl border-4 border-amber-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
+                        <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-amber-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">1</span>
+                        <!-- ぬりえ・スタンプ用円 -->
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-amber-400 bg-white flex items-center justify-center text-[10px] font-bold text-amber-500">
+                            できた
+                        </div>
+                        <div id="prevSvg1" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
+                        <p id="prevText1" class="text-xs sm:text-sm font-black text-center text-slate-800 leading-tight my-auto px-1"></p>
+                    </div>
+
+                    <!-- マス 2 -->
+                    <div class="bg-pastelBlue/40 rounded-2xl border-4 border-sky-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
+                        <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-sky-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">2</span>
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-sky-400 bg-white flex items-center justify-center text-[10px] font-bold text-sky-500">
+                            できた
+                        </div>
+                        <div id="prevSvg2" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
+                        <p id="prevText2" class="text-xs sm:text-sm font-black text-center text-slate-800 leading-tight my-auto px-1"></p>
+                    </div>
+
+                    <!-- マス 3 -->
+                    <div class="bg-pastelPink/40 rounded-2xl border-4 border-pink-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
+                        <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-pink-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">3</span>
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-pink-400 bg-white flex items-center justify-center text-[10px] font-bold text-pink-500">
+                            できた
+                        </div>
+                        <div id="prevSvg3" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
+                        <p id="prevText3" class="text-xs sm:text-sm font-black text-center text-slate-800 leading-tight my-auto px-1"></p>
+                    </div>
+
+                    <!-- マス 4 -->
+                    <div class="bg-pastelGreen/40 rounded-2xl border-4 border-emerald-300 p-2 sm:p-3 flex flex-col items-center justify-between relative shadow-sm">
+                        <span class="absolute top-1.5 left-2 w-6 h-6 sm:w-7 sm:h-7 bg-emerald-400 text-white font-black rounded-full flex items-center justify-center text-xs sm:text-sm shadow">4</span>
+                        <div class="absolute top-1.5 right-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-emerald-400 bg-white flex items-center justify-center text-[10px] font-bold text-emerald-500">
+                            できた
+                        </div>
+                        <div id="prevSvg4" class="w-16 h-16 sm:w-20 sm:h-20 mt-4 flex items-center justify-center"></div>
+                        <p id="prevText4" class="text-xs sm:text-sm font-black text-center text-slate-800 leading-tight my-auto px-1"></p>
+                    </div>
+
+                </div>
+
+                <!-- フッターメッセージ -->
+                <div class="mt-4 pt-3 border-t-2 border-dashed border-slate-200 text-center">
+                    <p class="text-xs sm:text-sm font-bold text-slate-700">
+                        🏫 しょうがっこうで まってるよ！ いっしょに あそぼうね 🤝
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 定義済みフレーズリスト
+        const PRESET_PHRASES = [
+            "こうちょうせんせいにあいさつ",
+            "おともだちにあいさつ",
+            "べつの1ねんせいにあいさつ",
+            "「ありがとう」でハイタッチ！",
+            "「おはようございます」という",
+            "「こんにちは」とえがおであいさつ",
+            "てをふって「さようなら」",
+            "めをみて「ありがとう」"
+        ];
+
+        // 教師側が用意するイラスト（SVG形式）
+        const SVG_ICONS = {
+            school: `<svg class="w-full h-full text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 22v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M18 22V6l-6-4-6 4v16"/><path d="M6 12h12"/><path d="M6 16h12"/><path d="M6 8h12"/></svg>`,
+            friends: `<svg class="w-full h-full text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            highfive: `<svg class="w-full h-full text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-1"/><path d="m6 15 3.5 3.5"/></svg>`,
+            wave: `<svg class="w-full h-full text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-1"/></svg>`,
+            sun: `<svg class="w-full h-full text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
+            heart: `<svg class="w-full h-full text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`,
+            smile: `<svg class="w-full h-full text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`,
+            sparkle: `<svg class="w-full h-full text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`
+        };
+
+        // 各マスの状態管理
+        const frameState = [
+            { phrase: PRESET_PHRASES[0], iconKey: 'school' },
+            { phrase: PRESET_PHRASES[1], iconKey: 'friends' },
+            { phrase: PRESET_PHRASES[2], iconKey: 'sparkle' },
+            { phrase: PRESET_PHRASES[3], iconKey: 'highfive' }
+        ];
+
+        // 初期化処理
+        window.onload = function() {
+            renderEditorUI();
+            updateCard();
+        };
+
+        // 編集UIの生成
+        function renderEditorUI() {
+            const container = document.getElementById('framesEditContainer');
+            container.innerHTML = '';
+
+            frameState.forEach((state, idx) => {
+                const frameNum = idx + 1;
+                const frameBox = document.createElement('div');
+                frameBox.className = 'bg-slate-50 p-4 rounded-2xl border-2 border-slate-200';
+
+                // マス見出し
+                const header = document.createElement('div');
+                header.className = 'font-black text-slate-700 mb-2 flex items-center gap-2';
+                header.innerHTML = `<span class="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">${frameNum}</span> マス${frameNum}の なかみ`;
+                frameBox.appendChild(header);
+
+                // セレクトボックス（選択肢）
+                const select = document.createElement('select');
+                select.className = 'w-full text-sm font-bold p-2 rounded-xl border-2 border-slate-300 mb-2 focus:ring-2 focus:ring-indigo-400 bg-white';
+                
+                PRESET_PHRASES.forEach(phrase => {
+                    const opt = document.createElement('option');
+                    opt.value = phrase;
+                    opt.textContent = phrase;
+                    if (phrase === state.phrase) opt.selected = true;
+                    select.appendChild(opt);
+                });
+
+                const customOpt = document.createElement('option');
+                customOpt.value = 'CUSTOM';
+                customOpt.textContent = '✏️ じぶんで つくる（自由入力）';
+                select.appendChild(customOpt);
+
+                // テキスト入力欄（自由入力用）
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = state.phrase;
+                input.className = 'w-full text-sm font-bold p-2 rounded-xl border-2 border-slate-300 mb-3 focus:ring-2 focus:ring-indigo-400 bg-white';
+                
+                select.onchange = (e) => {
+                    if (e.target.value !== 'CUSTOM') {
+                        input.value = e.target.value;
+                        frameState[idx].phrase = e.target.value;
+                        updateCard();
+                    }
+                };
+
+                input.oninput = (e) => {
+                    frameState[idx].phrase = e.target.value;
+                    updateCard();
+                };
+
+                frameBox.appendChild(select);
+                frameBox.appendChild(input);
+
+                // イラスト選択（アイコンボタン群）
+                const iconLabel = document.createElement('p');
+                iconLabel.className = 'text-xs font-bold text-slate-500 mb-1';
+                iconLabel.textContent = 'イラストを えらんでね：';
+                frameBox.appendChild(iconLabel);
+
+                const iconGrid = document.createElement('div');
+                iconGrid.className = 'grid grid-cols-4 gap-2';
+
+                Object.keys(SVG_ICONS).forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `icon-option p-2 rounded-xl border-2 border-slate-200 bg-white transition flex items-center justify-center h-10 ${state.iconKey === key ? 'selected' : ''}`;
+                    btn.innerHTML = `<div class="w-6 h-6">${SVG_ICONS[key]}</div>`;
+                    
+                    btn.onclick = () => {
+                        frameState[idx].iconKey = key;
+                        // 選択ハイライト更新
+                        iconGrid.querySelectorAll('.icon-option').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        updateCard();
+                    };
+
+                    iconGrid.appendChild(btn);
+                });
+
+                frameBox.appendChild(iconGrid);
+                container.appendChild(frameBox);
+            });
+        }
+
+        // リアルタイムプレビュー更新
+        function updateCard() {
+            // 基本情報
+            document.getElementById('previewClass').textContent = document.getElementById('inputClass').value || '1ねん';
+            document.getElementById('previewName').textContent = document.getElementById('inputName').value || 'なまえ';
+
+            // 各マス
+            frameState.forEach((state, idx) => {
+                const frameNum = idx + 1;
+                document.getElementById(`prevText${frameNum}`).textContent = state.phrase;
+                document.getElementById(`prevSvg${frameNum}`).innerHTML = SVG_ICONS[state.iconKey] || '';
+            });
+        }
+    </script>
+</body>
+</html>
